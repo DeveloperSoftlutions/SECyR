@@ -1,6 +1,6 @@
 <?php
 
-	$tit = "Sistema de Registro de Aspirantes | Softlutions";
+	$tit = "Sistema de Evaluación Continua y Reforzamiento | Softlutions";
 	$dateNow = date("Y-m-d");
 	$timeNow = date("H:i");
 	$folderImgUploads = "uploads";
