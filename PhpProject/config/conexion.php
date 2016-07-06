@@ -17,5 +17,11 @@
 	$tAlum = "alumnos";
         $tTut = "tutores";
 	$tInfo = "informacion";
+        
+        //Tablas de Banco
+        $tMat = "banco_materias";
+        $tBloq = "banco_bloques";
+        $tTema = "banco_temas";
+        $tSubTema = "banco_subtemas";
 	
 ?>

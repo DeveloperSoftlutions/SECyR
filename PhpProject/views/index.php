@@ -49,15 +49,16 @@
                         url: "../controllers/login_user.php",
                         data: $('form#formLogin').serialize(),
                         success: function (msg) {
-                            alert(msg);
-                            /*if(msg == "2"){ //admin
-                                location.href = "reports.php";
-                            }else if(msg == "3"){ // capturista
-                                location.href = "upload_info.php";
-                            } else {
+                            //alert(msg);
+                            var msg = jQuery.parseJSON(msg);
+                            if(msg.error == 0){
+                                if(msg.perfil == 1) location.href="#";
+                                else if(msg.perfil == 2) location.href="#";
+                                else location.href="#";
+                            }else{
                                 $('.msg').css({color: "#FF0000"});
-                                $('.msg').html(msg);
-                            }*/
+                                $('.msg').html(msg.msgErr);
+                            }
                         },
                         error: function () {
                             alert("Error al iniciar sesión de usuario");

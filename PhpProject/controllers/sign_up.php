@@ -48,7 +48,7 @@
         $cadErr .= 'Error al insertar información.<br>'.$con->error;
     }
     
-    $ban = true;
+    //$ban = true;
     if($ban){
         echo json_encode(array("error"=>'0'));
     }else{
