@@ -3,8 +3,8 @@
 	$tit = "Sistema de Evaluación Continua y Reforzamiento | Softlutions";
 	$dateNow = date("Y-m-d");
 	$timeNow = date("H:i");
-	$folderCSVUploads = "uploads";
-        $no = "No"; //0
-        $si = "Si"; //1
+	$csvUploads = "uploads";
+        $no = 0; 
+        $si = 1; 
 	
 ?>
