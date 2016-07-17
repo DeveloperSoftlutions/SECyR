@@ -27,13 +27,25 @@
     $rowGetNameBloque = $resGetNameBloque->fetch_assoc();
     $nameBloque = $rowGetNameBloque['nombre'];
     
+    $idTema = $_GET['idTema'];
+    $sqlGetNameTema = "SELECT nombre FROM $tTema WHERE id='$idTema' ";
+    $resGetNameTema = $con->query($sqlGetNameTema);
+    $rowGetNameTema = $resGetNameTema->fetch_assoc();
+    $nameTema = $rowGetNameTema['nombre'];
+    
+    $idSubTema = $_GET['idSubtema'];
+    $sqlGetNameSubTema = "SELECT nombre FROM $tSubTema WHERE id='$idSubTema' ";
+    $resGetNameSubTema = $con->query($sqlGetNameSubTema);
+    $rowGetNameSubTema = $resGetNameSubTema->fetch_assoc();
+    $nameSubTema = $rowGetNameSubTema['nombre'];
+    
 ?>
 
     <div class="container">
         <div class="row placeholder text-center">
             <div class="col-sm-12 placeholder">
                 <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#modalAdd">
-                    Añadir nuevo Tema
+                    Añadir nueva pregunta de Examen de Diagnostico
                     <span class="glyphicon glyphicon-plus"></span>
                 </button>
             </div>
@@ -43,16 +55,18 @@
             <table class="table table-striped" id="data">
                 <caption>
                     <?php $cadCap = '<a href="admin_add_banco_materias.php">'.$nameMateria.'</a> -> '
-                            .'<a href="admin_add_banco_bloques.php?idMateria='.$idMateria.'">'.$nameBloque.'</a> ';
+                            .'<a href="admin_add_banco_bloques.php?idMateria='.$idMateria.'">'.$nameBloque.'</a> -> '
+                            .'<a href="admin_add_banco_temas.php?idMateria='.$idMateria.'&idBloque='.$idBloque.'">'.$nameTema.'</a> ->'
+                            .'<a href="admin_add_banco_subtemas.php?idMateria='.$idMateria.'&idBloque='.$idBloque.'&idTema='.$idTema.'">'.$nameSubTema.'</a>';
                     ?> 
-                    <?= $cadCap; ?> -> Temas
+                    <?= $cadCap; ?> -> Preguntas
                 </caption>
                 <thead>
                     <tr>
                         <th><span title="id">Id</span></th>
                         <th><span title="nombre">Nombre</span></th>
                         <th><span title="created">Creado</span></th>
-                        <th>Ver Subtemas</th>
+                        <th>Ver Respuestas</th>
                     </tr>
                 </thead>
                 <tbody></tbody>
@@ -66,13 +80,13 @@
                         <button type="button" class="close" data-dismiss="modal">
                             <span aria-hidden="true">&times;</span><span class="sr-only">Cerrar</span>
                         </button>
-                        <h4 class="modal-title" id="exampleModalLabel">Añadir nuevo tema al bloque: <?= $nameMateria.'/'.$nameBloque; ?></h4>
+                        <h4 class="modal-title" id="exampleModalLabel">Añadir nueva pregunta al Subtema: <?= $nameMateria.'/'.$nameBloque.'/'.$nameTema.'/'.$nameSubTema; ?></h4>
                         <p class="msgModal"></p>
                     </div>
                     <form id="formAdd" name="formAdd">
                         <div class="modal-body">
                             <div class="form-group">
-                                <input type="text" name="inputIdBloque" value="<?= $idBloque; ?>" >
+                                <input type="text" name="inputIdSubTema" value="<?= $idSubTema; ?>" >
                                 <label for="inputName">Nombre: </label>
                                 <input type="text" class="form-control" id="inputName" name="inputName" >
                             </div>
@@ -96,7 +110,7 @@
                $.ajax({
                    type: "POST",
                    data: ordenar, 
-                   url: "../controllers/get_temas.php?id="+<?=$idBloque;?>,
+                   url: "../controllers/get_preg_examen_diag.php?id="+<?=$idSubTema;?>,
                    success: function(msg){
                        //alert(msg);
                        var msg = jQuery.parseJSON(msg);
@@ -108,7 +122,7 @@
                                     +'<td>'+msg.dataRes[i].id+'</td>'   
                                     +'<td>'+msg.dataRes[i].nombre+'</td>'   
                                     +'<td>'+msg.dataRes[i].creado+'</td>' 
-                                    +'<td><a href="admin_add_banco_subtemas.php?idMateria='+<?=$idMateria;?>+'&idBloque='+<?=$idBloque;?>+'&idTema='+msg.dataRes[i].id+'" class="btn btn-default"><span class="glyphicon glyphicon-th-list"></span></a></td>'
+                                    +'<td><a href="admin_add_banco_resp_examen_diag.php?idMateria='+<?=$idMateria;?>+'&idBloque='+<?=$idBloque;?>+'&idTema='+<?=$idTema;?>+'&idSubtema='+<?=$idSubTema;?>+'&idPreg='+msg.dataRes[i].id+'" class="btn btn-default"><span class="glyphicon glyphicon-th-list"></span></a></td>'
                                     +'</tr>';
                                 $(newRow).appendTo("#data tbody");
                            });
@@ -140,7 +154,7 @@
                     inputName: {required: true}
                 },
                 messages: {
-                    inputName: "Nombre del tema obligatorio"
+                    inputName: "Nombre de la pregunta obligatorio"
                 },
                 tooltip_options: {
                     inputName: {trigger: "focus", placement: "bottom"}
@@ -148,7 +162,7 @@
                 submitHandler: function(form){
                     $.ajax({
                         type: "POST",
-                        url: "../controllers/admin_add_banco_tema.php",
+                        url: "../controllers/admin_add_banco_preg_examen_diag.php",
                         data: $('form#formAdd').serialize(),
                         success: function(msg){
                             var msg = jQuery.parseJSON(msg);
@@ -156,14 +170,14 @@
                                 $('.msgModal').css({color: "#77DD77"});
                                 $('.msgModal').html(msg.msgErr);
                                 setTimeout(function () {
-                                  location.href = 'admin_add_banco_temas.php?idMateria='+<?= $idMateria; ?>+'&idBloque='+<?= $idBloque; ?>;
+                                  location.href = 'admin_add_banco_preg_examen_diag.php?idMateria='+<?=$idMateria;?>+'&idBloque='+<?=$idBloque;?>+'&idTema='+<?=$idTema;?>+'&idSubtema='+<?=$idSubTema;?>;
                                 }, 1500);
                             }else{
                                 $('.msgModal').css({color: "#FF0000"});
                                 $('.msgModal').html(msg.msgErr);
                             }
                         }, error: function(){
-                            alert("Error al crear nuevo tema");
+                            alert("Error al crear nuevo pregunta");
                         }
                     });
                 }

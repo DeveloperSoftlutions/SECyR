@@ -23,5 +23,14 @@
         $tBloq = "banco_bloques";
         $tTema = "banco_temas";
         $tSubTema = "banco_subtemas";
+        $tPregExamDiag = "banco_preg_exam";
+        $tRespExamDiag = "banco_resp_exam";
 	
+        //Tablas Clases
+        $tClass = "clase";
+        $tClassNivel = "clase_nivel";
+        $tClassGrado = "clase_grado";
+        $tClassInfo = "clase_info";
+        $tClassAlum = "clase_alumno";
+        
 ?>

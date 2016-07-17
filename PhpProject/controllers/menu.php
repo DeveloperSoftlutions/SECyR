@@ -6,6 +6,7 @@
             $cadMenuNavbar .= '<li><a href="#">Menú Escuela</a></li>';
         } else if($_SESSION['perfil'] == "2"){//Profesor
             $cadMenuNavbar .= '<li><a href="#">Menu Profesor</a></li>';
+            $cadMenuNavbar .= '<li><a href="prof_view_class.php">Clases Profesor</a></li>';
         } else if($_SESSION['perfil'] == "3"){//Alumno
             $cadMenuNavbar .= '<li><a href="#">Menu Alumno</a></li>';
         } else if($_SESSION['perfil'] == "4"){//Tutor

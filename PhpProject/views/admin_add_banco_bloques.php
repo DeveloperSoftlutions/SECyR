@@ -88,7 +88,7 @@
                $.ajax({
                    type: "POST",
                    data: ordenar, 
-                   url: "../controllers/get_bloques.php?id="+<?=$idMateria;?>,
+                   url: "../controllers/get_bloques.php?idMateria="+<?=$idMateria;?>,
                    success: function(msg){
                        //alert(msg);
                        var msg = jQuery.parseJSON(msg);
@@ -148,7 +148,7 @@
                                 $('.msgModal').css({color: "#77DD77"});
                                 $('.msgModal').html(msg.msgErr);
                                 setTimeout(function () {
-                                  location.href = 'admin_add_banco_bloques.php?id='+<?= $idMateria; ?>;
+                                  location.href = 'admin_add_banco_bloques.php?idMateria='+<?= $idMateria; ?>;
                                 }, 1500);
                             }else{
                                 $('.msgModal').css({color: "#FF0000"});

@@ -53,7 +53,7 @@
                             var msg = jQuery.parseJSON(msg);
                             if(msg.error == 0){
                                 if(msg.perfil == 1) location.href="#";
-                                else if(msg.perfil == 2) location.href="#";
+                                else if(msg.perfil == 2) location.href="index_profesor.php";
                                 else location.href="#";
                             }else{
                                 $('.msg').css({color: "#FF0000"});

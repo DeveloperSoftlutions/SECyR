@@ -59,7 +59,7 @@
                         <th><span title="id">Id</span></th>
                         <th><span title="nombre">Nombre</span></th>
                         <th><span title="created">Creado</span></th>
-                        <!-- <th>Ver Subtemas</th> -->
+                        <th>Ver Preguntas</th> 
                     </tr>
                 </thead>
                 <tbody></tbody>
@@ -115,7 +115,7 @@
                                     +'<td>'+msg.dataRes[i].id+'</td>'   
                                     +'<td>'+msg.dataRes[i].nombre+'</td>'   
                                     +'<td>'+msg.dataRes[i].creado+'</td>' 
-                                    //+'<td><a href="admin_add_banco_subtemas.php?idMateria='+<?=$idMateria;?>+'&idBloque='+msg.dataRes[i].id+'" class="btn btn-default"><span class="glyphicon glyphicon-th-list"></span></a></td>'
+                                    +'<td><a href="admin_add_banco_preg_examen_diag.php?idMateria='+<?=$idMateria;?>+'&idBloque='+<?=$idBloque;?>+'&idTema='+<?=$idTema;?>+'&idSubtema='+msg.dataRes[i].id+'" class="btn btn-default"><span class="glyphicon glyphicon-th-list"></span></a></td>'
                                     +'</tr>';
                                 $(newRow).appendTo("#data tbody");
                            });
