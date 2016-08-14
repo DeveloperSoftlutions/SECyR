@@ -52,8 +52,10 @@
                             //alert(msg);
                             var msg = jQuery.parseJSON(msg);
                             if(msg.error == 0){
-                                if(msg.perfil == 1) location.href="#";
+                                if(msg.perfil == 1) location.href="index_escuela.php";
                                 else if(msg.perfil == 2) location.href="index_profesor.php";
+                                else if(msg.perfil == 3) location.href="est_app_exam.php";
+                                else if(msg.perfil == 10) location.href="index_admin.php";
                                 else location.href="#";
                             }else{
                                 $('.msg').css({color: "#FF0000"});

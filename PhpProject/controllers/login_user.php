@@ -54,11 +54,24 @@
                     $perfil = 4;
                     $ban = true;
                 }
-                else{ // Definitivamente no existe
-                    $_SESSION['sessU']=false;
-                    //echo "Error en la consulta<br>".$con->error;
-                    $cadErr = "Usuario incorrecto";
-                    $ban = false;
+                else{ // Si no esta en tutores lo buscamos en administradores
+                    $sqlGetUser = "SELECT $tAdm.id as id, $tAdm.nombre as name FROM $tAdm WHERE BINARY $tAdm.user='$user' AND BINARY $tAdm.pass='$pass' ";
+                    $resGetUser=$con->query($sqlGetUser);
+                    if($resGetUser->num_rows > 0){
+                        $rowGetUser=$resGetUser->fetch_assoc();
+                        $_SESSION['sessU'] = true;
+                        $_SESSION['userId'] = $rowGetUser['id'];
+                        $_SESSION['userName'] = $rowGetUser['name'];
+                        $_SESSION['perfil'] = 10;
+                        $perfil = 10;
+                        $ban = true;
+                    }
+                    else{ // Definitivamente no existe
+                        $_SESSION['sessU']=false;
+                        //echo "Error en la consulta<br>".$con->error;
+                        $cadErr = "Usuario incorrecto";
+                        $ban = false;
+                    }
                 }
             }
         }

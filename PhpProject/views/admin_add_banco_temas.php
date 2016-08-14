@@ -14,18 +14,30 @@
     if (!isset($_SESSION['sessU'])){
         echo '<div class="row><div class="col-sm-12 text-center"><h2>No tienes permiso para entrar a esta sección. ━━[○･｀Д´･○]━━ </h2></div></div>';
     }else {
-        
-    $idMateria = $_GET['idMateria'];
-    $sqlGetNameMateria = "SELECT nombre FROM $tMat WHERE id='$idMateria' ";
-    $resGetNameMateria = $con->query($sqlGetNameMateria);
-    $rowGetNameMateria = $resGetNameMateria->fetch_assoc();
-    $nameMateria = $rowGetNameMateria['nombre'];
-    
-    $idBloque = $_GET['idBloque'];
-    $sqlGetNameBloque = "SELECT nombre FROM $tBloq WHERE id='$idBloque' ";
-    $resGetNameBloque = $con->query($sqlGetNameBloque);
-    $rowGetNameBloque = $resGetNameBloque->fetch_assoc();
-    $nameBloque = $rowGetNameBloque['nombre'];
+        //Obtenemos Nombre del nivel
+        $idNivel = $_GET['idNivel'];
+        $sqlGetName = "SELECT nombre FROM $tNivEsc WHERE id='$idNivel' ";
+        $resGetName = $con->query($sqlGetName);
+        $rowGetName = $resGetName->fetch_assoc();
+        $nameNivel = $rowGetName['nombre'];
+        //Obtenemos Nombre del grado
+        $idGrado = $_GET['idGrado'];
+        $sqlGetName = "SELECT nombre FROM $tGrado WHERE id='$idGrado' ";
+        $resGetName = $con->query($sqlGetName);
+        $rowGetName = $resGetName->fetch_assoc();
+        $nameGrado = $rowGetName['nombre'];
+        //Obtenemos Materia
+        $idMateria = $_GET['idMateria'];
+        $sqlGetNameMateria = "SELECT nombre FROM $tMat WHERE id='$idMateria' ";
+        $resGetNameMateria = $con->query($sqlGetNameMateria);
+        $rowGetNameMateria = $resGetNameMateria->fetch_assoc();
+        $nameMateria = $rowGetNameMateria['nombre'];
+        //Obtenemos Bloque
+        $idBloque = $_GET['idBloque'];
+        $sqlGetNameBloque = "SELECT nombre FROM $tBloq WHERE id='$idBloque' ";
+        $resGetNameBloque = $con->query($sqlGetNameBloque);
+        $rowGetNameBloque = $resGetNameBloque->fetch_assoc();
+        $nameBloque = $rowGetNameBloque['nombre'];
     
 ?>
 
@@ -42,9 +54,12 @@
         <div class="table-responsive">
             <table class="table table-striped" id="data">
                 <caption>
-                    <?php $cadCap = '<a href="admin_add_banco_materias.php">'.$nameMateria.'</a> -> '
-                            .'<a href="admin_add_banco_bloques.php?idMateria='.$idMateria.'">'.$nameBloque.'</a> ';
-                    ?> 
+                    <?php 
+                        $cadCap = '<a href="admin_add_banco_niveles.php">'.$nameNivel.'</a> -> ';
+                        $cadCap .= '<a href="admin_add_banco_grados.php?idNivel='.$idNivel.'">'.$nameGrado.'</a> -> ';
+                        $cadCap .= '<a href="admin_add_banco_materias.php?idNivel='.$idNivel.'&idGrado='.$idGrado.'">'.$nameMateria.'</a> -> ';
+                        $cadCap .= '<a href="admin_add_banco_bloques.php?idNivel='.$idNivel.'&idGrado='.$idGrado.'&idBloque='.$idBloque.'">'.$nameBloque.'</a>';
+                    ?>
                     <?= $cadCap; ?> -> Temas
                 </caption>
                 <thead>
@@ -66,7 +81,7 @@
                         <button type="button" class="close" data-dismiss="modal">
                             <span aria-hidden="true">&times;</span><span class="sr-only">Cerrar</span>
                         </button>
-                        <h4 class="modal-title" id="exampleModalLabel">Añadir nuevo tema al bloque: <?= $nameMateria.'/'.$nameBloque; ?></h4>
+                        <h4 class="modal-title" id="exampleModalLabel">Añadir nuevo tema al bloque: <?=$nameBloque;?></h4>
                         <p class="msgModal"></p>
                     </div>
                     <form id="formAdd" name="formAdd">
@@ -108,7 +123,7 @@
                                     +'<td>'+msg.dataRes[i].id+'</td>'   
                                     +'<td>'+msg.dataRes[i].nombre+'</td>'   
                                     +'<td>'+msg.dataRes[i].creado+'</td>' 
-                                    +'<td><a href="admin_add_banco_subtemas.php?idMateria='+<?=$idMateria;?>+'&idBloque='+<?=$idBloque;?>+'&idTema='+msg.dataRes[i].id+'" class="btn btn-default"><span class="glyphicon glyphicon-th-list"></span></a></td>'
+                                    +'<td><a href="admin_add_banco_subtemas.php?idNivel='+<?=$idNivel;?>+'&idGrado='+<?=$idGrado;?>+'&idMateria='+<?=$idMateria;?>+'&idBloque='+<?=$idBloque;?>+'&idTema='+msg.dataRes[i].id+'" class="btn btn-default"><span class="glyphicon glyphicon-th-list"></span></a></td>'
                                     +'</tr>';
                                 $(newRow).appendTo("#data tbody");
                            });
@@ -156,7 +171,7 @@
                                 $('.msgModal').css({color: "#77DD77"});
                                 $('.msgModal').html(msg.msgErr);
                                 setTimeout(function () {
-                                  location.href = 'admin_add_banco_temas.php?idMateria='+<?= $idMateria; ?>+'&idBloque='+<?= $idBloque; ?>;
+                                  location.href = 'admin_add_banco_temas.php?idNivel='+<?=$idNivel;?>+'&idGrado='+<?=$idGrado;?>+'&idMateria='+<?= $idMateria; ?>+'&idBloque='+<?= $idBloque; ?>;
                                 }, 1500);
                             }else{
                                 $('.msgModal').css({color: "#FF0000"});

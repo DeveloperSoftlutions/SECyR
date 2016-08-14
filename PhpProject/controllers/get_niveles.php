@@ -5,29 +5,27 @@
     $materia = array();
     $msgErr = '';
     $ban = false;
-    $idSubTema = $_GET['id'];
     
-    $sqlGetPregExamDiag = "SELECT * FROM $tPregExamDiag WHERE subtema_id='$idSubTema' ";
-    
+    $sqlGetMateria = "SELECT * FROM $tNivEsc ";
     //Ordenar ASC y DESC
     $vorder = (isset($_POST['orderby'])) ? $_POST['orderby'] : "";
     if($vorder != ''){
-        $sqlGetPregExamDiag .= " ORDER BY ".$vorder;
+        $sqlGetMateria .= " ORDER BY ".$vorder;
     }
                 
-    $resGetPregExamDiag = $con->query($sqlGetPregExamDiag);
-    if($resGetPregExamDiag->num_rows > 0){
-        while($rowGetPregExamDiag = $resGetPregExamDiag->fetch_assoc()){
+    $resGetMateria = $con->query($sqlGetMateria);
+    if($resGetMateria->num_rows > 0){
+        while($rowGetMateria = $resGetMateria->fetch_assoc()){
             //$cadRes .= '<option value="'.$rowGetMateria['id'].'">'.$rowGetMateria['nombre'].'</option>';
-            $id = $rowGetPregExamDiag['id'];
-            $name = $rowGetPregExamDiag['nombre'];
-            $created = $rowGetPregExamDiag['created'];
+            $id = $rowGetMateria['id'];
+            $name = $rowGetMateria['nombre'];
+            $created = $rowGetMateria['created'];
             $materia[] = array('id'=>$id, 'nombre'=>$name, 'creado'=>$created);
             $ban = true;
         }
     }else{
         $ban = false;
-        $msgErr = 'No existen preguntas en este subtema   （┬┬＿┬┬） '.$con->error;
+        $msgErr = 'No existen materias   （┬┬＿┬┬） '.$con->error;
     }
     
     if($ban){

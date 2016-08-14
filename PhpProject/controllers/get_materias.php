@@ -6,7 +6,10 @@
     $msgErr = '';
     $ban = false;
     
-    $sqlGetMateria = "SELECT * FROM $tMat ";
+    $idNivel = $_GET['idNivel'];
+    $idGrado = $_GET['idGrado'];
+    
+    $sqlGetMateria = "SELECT * FROM $tMat WHERE nivel_id='$idNivel' AND grado_id='$idGrado' ";
     
     //Ordenar ASC y DESC
     $vorder = (isset($_POST['orderby'])) ? $_POST['orderby'] : "";

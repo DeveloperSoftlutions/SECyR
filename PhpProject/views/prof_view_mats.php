@@ -20,43 +20,34 @@
         
         $idPerfil = $_SESSION['perfil'];
         $idUser = $_SESSION['userId'];
-        $idClass = $_GET['idClase'];
         
-        // Obtenemos la información de la clase
-        $sqlGetClassInfo = "SELECT $tClassGrado.nombre as grado, "
-            ." $tClassInfo.grupo as grupo, $tMat.nombre as materia "
-            ."FROM $tClassInfo "
-            ."INNER JOIN $tClassGrado ON $tClassGrado.id=$tClassInfo.grado_id "
-            ."INNER JOIN $tMat ON $tMat.id=$tClassInfo.materia_id "
-            ."WHERE $tClassInfo.id='$idClass' ";
-        $resGetClassInfo = $con->query($sqlGetClassInfo);
-        $rowGetClassInfo = $resGetClassInfo->fetch_assoc();
 ?>
 
     <div class="container">
-        <div class="row">
+         <div class="row">
             <div id="loading">
                 <img src="../assets/obj/loading.gif" height="300" width="400">
             </div>
         </div>
-        <div class="row">
-            <div class="col-sm-12">
-                <h1>Alumnos del <?= $rowGetClassInfo['grado'].'-'.$rowGetClassInfo['grupo'].' de la materia '.$rowGetClassInfo['materia'];?></h1>
-            </div>
-        </div>
+
         <div class="table-responsive">
             <table class="table table-striped" id="data">
-                <caption>Tus clases</caption>
+                <caption>Tus materias</caption>
                 <thead>
                     <tr>
                         <th><span title="id">Id</span></th>
-                        <th><span title="nombre">Nombre</span></th>
+                        <th><span title="#">Nivel</span></th>
+                        <th><span title="#">Escuela</span></th>
+                        <th><span title="#">Turno</span></th>
+                        <th><span title="#">Grado</span></th>
+                        <th><span title="#">Grupo</span></th>
+                        <th><span title="#">Materia</span></th>
+                        <th>Ver Examenes</th>
                     </tr>
                 </thead>
                 <tbody></tbody>
             </table>
         </div>
-        
         
     </div>
 
@@ -65,25 +56,33 @@
         var ordenar = '';
         $(document).ready(function(){
            $('[data-toggle="tooltip"]').tooltip();
-           filtrar();
+            
+            filtrar();
            function filtrar(){
                $.ajax({
                    type: "POST",
                    data: ordenar, 
-                   url: "../controllers/get_clases_estudiantes.php?idClass="+<?= $idClass; ?>,
+                   url: "../controllers/get_materias_prof3.php?idProf="+<?=$idUser;?>,
                    success: function(msg){
-                       alert(msg);
+                       //alert(msg);
+                       $("#data tbody").html(msg);
                        var msg = jQuery.parseJSON(msg);
                        if(msg.error == 0){
-                           //alert(msg.dataRes[0].id);
+                           alert(msg.dataRes[0]);
                            $("#data tbody").html("");
-                           $.each(msg.dataRes, function(i, item){
+                           for(var i=0; i<(msg.dataRes.length); i=i+8){
                                var newRow = '<tr>'
-                                    +'<td>'+msg.dataRes[i].id+'</td>'   
-                                    +'<td>'+msg.dataRes[i].name+'</td>'   
+                                    +'<td>'+msg.dataRes[i]+'</td>'   
+                                    +'<td>'+msg.dataRes[i+2]+'</td>'   
+                                    +'<td>'+msg.dataRes[i+5]+'</td>'   
+                                    +'<td>'+msg.dataRes[i+4]+'</td>'   
+                                    +'<td>'+msg.dataRes[i+3]+'</td>'   
+                                    +'<td>'+msg.dataRes[i+1]+'</td>'   
+                                    +'<td>'+msg.dataRes[i+6]+'</td>'  
+                                    +'<td><a href="prof_view_exams.php?idGrupo='+msg.dataRes[i]+'&idMateria='+msg.dataRes[i+7]+'"><span class="glyphicon glyphicon-th-list"></span></a></td>'
                                     +'</tr>';
                                 $(newRow).appendTo("#data tbody");
-                           });
+                           }
                        }else{
                            var newRow = '<tr><td></td><td>'+msg.msgErr+'</td></tr>';
                            $("#data tbody").html(newRow);
@@ -91,8 +90,8 @@
                    }
                });
            }
-           
-           //Ordenar ASC y DESC header tabla
+            
+            //Ordenar ASC y DESC header tabla
             $("#data th span").click(function(){
                 if($(this).hasClass("desc")){
                     $("#data th span").removeClass("desc").removeClass("asc");
@@ -106,7 +105,7 @@
                 filtrar();
             });
             
-           
+            
             
         });
     </script>

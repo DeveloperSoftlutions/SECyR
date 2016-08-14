@@ -1,6 +1,7 @@
 <?php
     include ('header.php');
     include('../config/variables.php');
+    include('../config/conexion.php');
 ?>
 
 <title><?=$tit;?></title>
@@ -13,6 +14,18 @@
     if (!isset($_SESSION['sessU'])){
         echo '<div class="row><div class="col-sm-12 text-center"><h2>No tienes permiso para entrar a esta sección. ━━[○･｀Д´･○]━━ </h2></div></div>';
     }else {
+        //Obtenemos Nombre del nivel
+        $idNivel = $_GET['idNivel'];
+        $sqlGetName = "SELECT nombre FROM $tNivEsc WHERE id='$idNivel' ";
+        $resGetName = $con->query($sqlGetName);
+        $rowGetName = $resGetName->fetch_assoc();
+        $nameNivel = $rowGetName['nombre'];
+        //Obtenemos Nombre del grado
+        $idGrado = $_GET['idGrado'];
+        $sqlGetName = "SELECT nombre FROM $tGrado WHERE id='$idGrado' ";
+        $resGetName = $con->query($sqlGetName);
+        $rowGetName = $resGetName->fetch_assoc();
+        $nameGrado = $rowGetName['nombre'];
 ?>
 
     <div class="container">
@@ -27,7 +40,13 @@
         <br>
         <div class="table-responsive">
             <table class="table table-striped" id="data">
-                <caption>Materias</caption>
+                <caption>
+                    <?php 
+                        $cadCap = '<a href="admin_add_banco_niveles.php">'.$nameNivel.'</a> -> ';
+                        $cadCap .= '<a href="admin_add_banco_grados.php?idNivel='.$idNivel.'">'.$nameGrado.'</a> ';
+                    ?>
+                    <?= $cadCap; ?> -> Materias
+                </caption>
                 <thead>
                     <tr>
                         <th><span title="id">Id</span></th>
@@ -53,6 +72,8 @@
                     <form id="formAdd" name="formAdd">
                         <div class="modal-body">
                             <div class="form-group">
+                                <input type="text" name="inputNivel" value="<?=$idNivel;?>" >
+                                <input type="text" name="inputGrado" value="<?=$idGrado;?>" >
                                 <label for="inputName">Nombre: </label>
                                 <input type="text" class="form-control" id="inputName" name="inputName" >
                             </div>
@@ -76,9 +97,9 @@
                $.ajax({
                    type: "POST",
                    data: ordenar, 
-                   url: "../controllers/get_materias.php",
+                   url: "../controllers/get_materias.php?idNivel="+<?=$idNivel;?>+"&idGrado="+<?=$idGrado;?>,
                    success: function(msg){
-                       //alert(msg);
+                       alert(msg);
                        var msg = jQuery.parseJSON(msg);
                        if(msg.error == 0){
                            //alert(msg.dataRes[0].id);
@@ -88,7 +109,7 @@
                                     +'<td>'+msg.dataRes[i].id+'</td>'   
                                     +'<td>'+msg.dataRes[i].nombre+'</td>'   
                                     +'<td>'+msg.dataRes[i].creado+'</td>' 
-                                    +'<td><a href="admin_add_banco_bloques.php?idMateria='+msg.dataRes[i].id+'" class="btn btn-default"><span class="glyphicon glyphicon-th-list"></span></a></td>'
+                                    +'<td><a href="admin_add_banco_bloques.php?idNivel='+<?=$idNivel;?>+'&idGrado='+<?=$idGrado;?>+'&idMateria='+msg.dataRes[i].id+'" class="btn btn-default"><span class="glyphicon glyphicon-th-list"></span></a></td>'
                                     +'</tr>';
                                 $(newRow).appendTo("#data tbody");
                            });
@@ -132,12 +153,13 @@
                         url: "../controllers/admin_add_banco_materia.php",
                         data: $('form#formAdd').serialize(),
                         success: function(msg){
+                            alert(msg);
                             var msg = jQuery.parseJSON(msg);
                             if(msg.error == 0){
                                 $('.msgModal').css({color: "#77DD77"});
                                 $('.msgModal').html(msg.msgErr);
                                 setTimeout(function () {
-                                  location.href = 'admin_add_banco_materias.php';
+                                  location.href = 'admin_add_banco_materias.php?idNivel='+<?=$idNivel;?>+'&idGrado='+<?=$idGrado;?>;
                                 }, 1500);
                             }else{
                                 $('.msgModal').css({color: "#FF0000"});
